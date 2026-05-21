@@ -50,7 +50,28 @@ public class Anagram extends JFrame{
     private Color[] colors = new Color[]{Color.RED,Color.black,Color.green,Color.blue};
 
     public Anagram(){
+        headerLabel = new JLabel("ANAGRAM CHECKER");
+        headerLabel.setFont(new Font("Serif",Font.BOLD,30));
+        result = getRandomColor();
+        headerLabel.setForeground(setColor());
+        
+    }
 
+    private int getRandomColor(){
+        return RAND.nextInt(colors.length);
+    }
+
+    private Color setColor(){
+        switch(result){
+            case 0:
+                return colors[0];
+            case 1: 
+                return colors[1];
+            case 3:
+                return colors[3];
+            default:
+                return colors[0];
+        }
     }
     
 }
