@@ -39,6 +39,8 @@ public class Anagram extends JFrame{
     private JButton submitButton;
     private JButton resetButton;
 
+    private JTextField wordOneTextField;
+    private JTextField wordTwoTextField;
     private JLabel wordOneLabel;
     private JLabel wordTwoLabel;
     private JLabel resultLabelText;
@@ -54,6 +56,59 @@ public class Anagram extends JFrame{
         headerLabel.setFont(new Font("Serif",Font.BOLD,30));
         result = getRandomColor();
         headerLabel.setForeground(setColor());
+         submitButton = new JButton("Submit");
+        resetButton = new JButton("Reset");
+        wordOneLabel = new JLabel("Word One:");
+        wordTwoLabel = new JLabel("Word Two:");
+        resultLabelText = new JLabel("Result:");
+        messageOneLbl = new JLabel("RESULT GOES HERE");
+        messageTwoLbl = new JLabel("ERRORS GO HERE");
+        messageOneLbl.setBounds(21,212,566,14);
+        messageTwoLbl.setBounds(21,250,566,14);
+        errorMessagesLabelText = new JLabel("Error Messages:");
+        resultLabelText.setBounds(21,198,79,14);
+        errorMessagesLabelText.setBounds(21,237,101,14);
+        wordOneLabel.setBounds(93,79,73,14);
+        wordTwoLabel.setBounds(93,128,73,14);
+        wordOneTextField = new JTextField();
+        wordTwoTextField = new JTextField();
+        wordOneTextField.setBounds(179,76,188,20);
+        wordTwoTextField.setBounds(179,125,188,20);
+        headerLabel.setBounds(X,Y,WIDTH,HEIGHT);
+        submitButton.setBounds(179,156,89,23);
+        resetButton.setBounds(278,156,89,23);
+        getContentPane().setBackground(Color.yellow);
+        add(headerLabel);
+        add(submitButton);
+        add(resetButton);
+        add(wordOneTextField);
+        add(wordTwoTextField);
+        add(wordOneLabel);
+        add(wordTwoLabel);
+        add(resultLabelText);
+        add(errorMessagesLabelText);
+        add(messageOneLbl);
+        add(messageTwoLbl);
+
+        submitButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+               submitWordButton(); 
+            }
+        });
+
+        resetButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                reset();
+            }
+        });
+
+    }
+
+    private void submitWordButton(){
+
+    }
+
+    private void reset(){
         
     }
 
