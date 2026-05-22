@@ -105,11 +105,79 @@ public class Anagram extends JFrame{
     }
 
     private void submitWordButton(){
+        userWordOne = wordOneTextField.getText();
+        userWordTwo = wordTwoTextField.getText();
+        boolean isValid = isExit();
+        if(!isValid){
+            JOptionPane.showMessageDialog(frame, "Exiting the program......");
+            dispose();
+        }
+
 
     }
 
+    private void checkWinner(String wordOne,String wordTwo,int[] wordOneArray,int[] wordTwoArray){
+
+    }
+
+    private void errorMessages(String wordOne,String wordTwo){
+
+    }
+
+    private String getGameMessage(String word,String wordOne,String wordTwo){
+        return "";
+    }
+
+    private String setGameMessage(JLabel label,String message){
+        return "";
+    }
+
+    private Supplier<Boolean> isInputEmpty(JTextField textField){
+        return ()->{
+            return true;
+        };
+    }
+
+    private Supplier<Boolean> isLengthOfWordsMismatch(JTextField jTextField,JTextField jTextFieldTwo){
+        return ()->{
+            return true;
+        };
+    }
+
+    private Supplier<Boolean>isAnagram(int[]firstWordArray,int[] secondWordArray,String caseWordOne,String caseWordTwo){
+        return ()->{
+            return true;
+        };
+    }
+
+    private void processWordsAndArrays(int[] firstWordArray,int[] secondWordArray,String caseWordOne,String caseWordTwo){
+        
+    }
+
+    private void countCharacters(String word,int[]count){
+
+    }
+
+    private void resetArrays(int[] numArrays){
+
+    }
+
+    private String checkCaseOfWord(String words){
+        return "";
+    }
+
+    private String convertToLowerCase(String input){
+        return "";
+    }
+
+    
+
     private void reset(){
         
+    }
+
+    private boolean isExit(){
+        return true;
     }
 
     private int getRandomColor(){
