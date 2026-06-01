@@ -122,7 +122,7 @@ public class Anagram extends JFrame{
 
         exitButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-
+                exitButton();
             }
         });
 
