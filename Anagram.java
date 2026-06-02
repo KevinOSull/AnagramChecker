@@ -14,12 +14,12 @@ import java.util.LinkedHashMap;
 import javax.swing.*;
 public class Anagram extends JFrame{
 
-    private int[] firstWordArray = new int[26];
+    /*private int[] firstWordArray = new int[26];
     private int[] secondWordArray = new int[26];
     private String caseWordOne = "";
     private String caseWordTwo = "";
     private String userWordOne = "";
-    private String userWordTwo = "";
+    private String userWordTwo = "";*/
 
     private JFrame frame = new JFrame();
     private static final Random RAND = new Random();
@@ -129,6 +129,12 @@ public class Anagram extends JFrame{
     }
 
     private void submitWordButton(){
+        readFile();
+        filterOutBadData();
+        startGame();
+    }
+
+    private void startGame(){
         userWordOne = wordOneTextField.getText();
         userWordTwo = wordTwoTextField.getText();
         boolean isValid = isExit();
@@ -149,6 +155,14 @@ public class Anagram extends JFrame{
         caseWordTwo = checkCaseOfWord(userWordTwo);
         processWordsAndArrays(firstWordArray,secondWordArray,caseWordOne,caseWordTwo);
         checkWinner(userWordOne,userWordTwo,firstWordArray,secondWordArray);
+    }
+
+    private void readFile(){
+
+    }
+
+    private void filterOutBadData(){
+
     }
 
     private void checkWinner(String wordOne,String wordTwo,int[] wordOneArray,int[] wordTwoArray){
