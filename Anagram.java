@@ -3,9 +3,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
+import java.util.Set;
 import java.util.InputMismatchException;
 
 import javax.swing.border.EmptyBorder;
@@ -23,6 +28,8 @@ public class Anagram extends JFrame{
 
     private JFrame frame = new JFrame();
     private static final Random RAND = new Random();
+    private static final File file = new File("words.txt");
+    private static Set<String> fileWords = new HashSet<>();
 
     private final int X = 53;
     private final int Y = 11;
@@ -129,40 +136,52 @@ public class Anagram extends JFrame{
     }
 
     private void submitWordButton(){
-        readFile();
+        readTextFile();
         filterOutBadData();
         startGame();
     }
 
     private void startGame(){
-        userWordOne = wordOneTextField.getText();
-        userWordTwo = wordTwoTextField.getText();
-        boolean isValid = isExit();
-        if(!isValid){
-            JOptionPane.showMessageDialog(frame, "Exiting the program......");
+        int[] firstWordArray = new int[26];
+        int[] secondWordArray = new int[26];
+        String userWordOne = wordOneTextField.getText();
+        String userWordTwo = wordTwoTextField.getText();
+        boolean isValid = isExit(userWordOne);
+        if(isValid){
+            JOptionPane.showMessageDialog(frame,"Thanks for playing!","Goodbye!",JOptionPane.INFORMATION_MESSAGE);
             dispose();
         }
 
-        if(isInputEmpty(wordOneTextField).get() || isInputEmpty(wordTwoTextField).get()){
-            errorMessages(userWordOne,userWordTwo);
-        }
 
-        boolean hasErrors = isLengthOfWordsMismatch(wordOneTextField,wordTwoTextField).get();
-        if(hasErrors){
-            errorMessages(userWordOne,userWordTwo);
-        }
-        caseWordOne = checkCaseOfWord(userWordOne);
-        caseWordTwo = checkCaseOfWord(userWordTwo);
-        processWordsAndArrays(firstWordArray,secondWordArray,caseWordOne,caseWordTwo);
-        checkWinner(userWordOne,userWordTwo,firstWordArray,secondWordArray);
     }
 
-    private void readFile(){
-
+    private void readTextFile(){
+        try(Scanner myFileScanner = new Scanner(file)){
+            while(myFileScanner.hasNextLine()){
+                String words = myFileScanner.nextLine();
+                fileWords.add(words.toLowerCase().trim());
+            }
+        }catch(FileNotFoundException e){
+            JOptionPane.showMessageDialog(frame,"File not found!","Error!",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void filterOutBadData(){
-
+        boolean isValid = true;
+        Set<String>cleanData = new HashSet<>();
+        for(String word:fileWords){
+            isValid = true;
+            for(int i = 0;i<word.length();i++){
+                if(!Character.isLetter(word.charAt(i))){
+                    isValid = false;
+                    break;
+                }
+            }
+            if(isValid){
+                cleanData.add(word);
+            }
+        }
+        fileWords = cleanData;
     }
 
     private void checkWinner(String wordOne,String wordTwo,int[] wordOneArray,int[] wordTwoArray){
@@ -227,7 +246,7 @@ public class Anagram extends JFrame{
 
     }
 
-    private boolean isExit(){
+    private boolean isExit(String userWordOne){
         return !userWordOne.equalsIgnoreCase("quit");
     }
 
@@ -247,5 +266,25 @@ public class Anagram extends JFrame{
                 return colors[0];
         }
     }
+
+
+
+   /*  private Supplier<Boolean> isInputEmpty(JTextField textField){
+        return ()->{
+            return true;
+        };
+    }
+
+    private Supplier<Boolean> isLengthOfWordsMismatch(JTextField jTextField,JTextField jTextFieldTwo){
+        return ()->{
+            return true;
+        };
+    }
+
+    private Supplier<Boolean>isAnagram(int[]firstWordArray,int[] secondWordArray,String caseWordOne,String caseWordTwo){
+        return ()->{
+            return true;
+        };
+    }*/
     
 }
