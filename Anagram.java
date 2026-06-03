@@ -144,13 +144,21 @@ public class Anagram extends JFrame{
     private void startGame(){
         int[] firstWordArray = new int[26];
         int[] secondWordArray = new int[26];
+        
+        //String userWordTwo = wordTwoTextField.getText();
         String userWordOne = wordOneTextField.getText();
-        String userWordTwo = wordTwoTextField.getText();
         boolean isValid = isExit(userWordOne);
         if(isValid){
             JOptionPane.showMessageDialog(frame,"Thanks for playing!","Goodbye!",JOptionPane.INFORMATION_MESSAGE);
             dispose();
         }
+
+        if(isInputEmpty(wordOneTextField) || isLengthOfWordValid() || !hasFileContainedWord(userWordOne)){
+            errorMessages(userWordOne,"temp");
+        } 
+
+        String userWordTwo = wordTwoTextField.getText();
+
 
 
     }
@@ -200,22 +208,27 @@ public class Anagram extends JFrame{
         return "";
     }
 
-    private Supplier<Boolean> isInputEmpty(JTextField textField){
-        return ()->{
-            return true;
-        };
+    private boolean isInputEmpty(JTextField textField){
+        return true;
+        
     }
 
-    private Supplier<Boolean> isLengthOfWordsMismatch(JTextField jTextField,JTextField jTextFieldTwo){
-        return ()->{
-            return true;
-        };
+    private boolean isLengthOfWordValid(JTextField jTextField){
+        return true;
     }
 
-    private Supplier<Boolean>isAnagram(int[]firstWordArray,int[] secondWordArray,String caseWordOne,String caseWordTwo){
-        return ()->{
-            return true;
-        };
+    private boolean isLengthOfWordsMismatch(JTextField jTextField,JTextField jTextFieldTwo){
+        return true;
+        
+    }
+
+    private boolean hasFileContainedWord(String word){
+        return true;
+    }
+
+    private boolean booleanIsAnagram(int[]firstWordArray,int[] secondWordArray,String caseWordOne,String caseWordTwo){
+        return true;
+        
     }
 
     private void processWordsAndArrays(int[] firstWordArray,int[] secondWordArray,String caseWordOne,String caseWordTwo){
