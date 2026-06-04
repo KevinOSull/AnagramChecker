@@ -153,13 +153,19 @@ public class Anagram extends JFrame{
             dispose();
         }
 
-        if(isInputEmpty(wordOneTextField) || isLengthOfWordValid() || !hasFileContainedWord(userWordOne)){
+        /*if(isInputEmpty(wordOneTextField) || isLengthOfWordValid(wordOneTextField) || !hasFileContainedWord(userWordOne)){
             errorMessages(userWordOne,"temp");
-        } 
+        } */
 
+        boolean hasErrors = isInputEmpty(wordOneTextField) || isLengthOfWordValid(wordOneTextField) || !hasFileContainedWord(wordOneTextField);
+        if(hasErrors){
+            errorMessages(userWordOne,"temp");
+        }
         String userWordTwo = wordTwoTextField.getText();
-
-
+        boolean hasSecondWordErrors = isInputEmpty(wordTwoTextField) || isLengthOfWordValid(wordTwoTextField) || !hasFileContainedWord(wordTwoTextField);
+        if(hasSecondWordErrors){
+            errorMessages(userWordOne,userWordTwo);
+        }
 
     }
 
@@ -222,7 +228,7 @@ public class Anagram extends JFrame{
         
     }
 
-    private boolean hasFileContainedWord(String word){
+    private boolean hasFileContainedWord(JTextField jTextField){
         return true;
     }
 
