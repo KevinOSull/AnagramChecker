@@ -157,16 +157,25 @@ public class Anagram extends JFrame{
             errorMessages(userWordOne,"temp");
         } */
 
-        boolean hasErrors = isInputEmpty(wordOneTextField) || isLengthOfWordValid(wordOneTextField) || !hasFileContainedWord(wordOneTextField);
+        /*boolean hasErrors = isInputEmpty(wordOneTextField) || isLengthOfWordValid(wordOneTextField) || !hasFileContainedWord(wordOneTextField);
         if(hasErrors){
             errorMessages(userWordOne,"temp");
-        }
-        String userWordTwo = wordTwoTextField.getText();
-        boolean hasSecondWordErrors = isInputEmpty(wordTwoTextField) || isLengthOfWordValid(wordTwoTextField) || !hasFileContainedWord(wordTwoTextField);
-        if(hasSecondWordErrors){
-            errorMessages(userWordOne,userWordTwo);
+        }*/
+
+        
+        if(hasErrors(wordOneTextField)){
+            errorMessages(userWordOne,"temp");
         }
 
+        String userWordTwo = wordTwoTextField.getText();
+        if(hasErrors(wordTwoTextField))
+            errorMessages(userWordOne,userWordTwo);
+    }
+
+    private boolean hasErrors(JTextField jTextField){
+        return isInputEmpty(jTextField) || 
+        isLengthOfWordValid(jTextField) || 
+        !hasFileContainedWord(jTextField);
     }
 
     private void readTextFile(){
