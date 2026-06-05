@@ -218,11 +218,53 @@ public class Anagram extends JFrame{
     }
 
     private void errorMessages(String wordOne,String wordTwo){
-
+        Map<String,Boolean>errorMessages = new LinkedHashMap<>();
+        errorMessages.put(getGameMessage("emptyFieldOne",wordOne,""),isInputEmpty(wordOneTextField));
+        errorMessages.put(getGameMessage("emptyFieldTwo","",wordTwo),isInputEmpty(wordTwoTextField));
+        errorMessages.put(getGameMessage("firstWordNotInFile",wordOne,""),!hasFileContainedWord(wordOneTextField));
+        errorMessages.put(getGameMessage("secondWordNotInFile","",wordTwo),!hasFileContainedWord(wordTwoTextField));
+        errorMessages.put(getGameMessage("lengthMismatch",wordOne,wordTwo),isLengthOfWordsMismatch(wordOneTextField,wordTwoTextField));
+        errorMessages.put(getGameMessage("isWordOneLengthInvalid",wordOne,""),isLengthOfWordValid(wordOneTextField));
+        errorMessages.put(getGameMessage("isWordTwoLengthInvalid","",wordTwo),isLengthOfWordValid(wordTwoTextField));
+        for(Map.Entry<String,Boolean> entry:errorMessages.entrySet()){
+            if(entry.getValue()){
+                setGameMessage(errorMessageLabel,entry.getKey());
+                System.out.println(entry.getKey());
+                break;
+            }
+        }
     }
 
     private String getGameMessage(String word,String wordOne,String wordTwo){
-        return "";
+        switch(word){
+            case "emptyFieldOne":
+                return String.format("\"%s\" FIELD ONE INPUT CANNOT BE EMPTY!!!!!", wordOne);
+
+            case "emptyFieldTwo":
+                return String.format("\"%s\" FIELD TWO INPUT CANNOT BE EMPTY!!!!!", wordTwo);
+            case "firstWordNotInFile":
+                return String.format("\"%s\" FIELD ONE INPUT IS NOT IN THE FILE!!!!!", wordOne);
+
+            case "secondWordNotInFile":
+                return String.format("\"%s\" FIELD TWO INPUT IS NOT IN THE FILE!!!!!", wordTwo);
+            
+            case "lengthMismatch":
+                return String.format("LENGTH OF \"%s\" AND \"%s\" DO NOT MATCH!!!!!", wordOne,wordTwo);
+            
+            case "isWordOneLengthInvalid":
+                return String.format("LENGTH OF \"%s\" FIELD ONE INPUT IS INVALID!!!!!", wordOne);
+            
+            case "isWordTwoLengthInvalid":
+                return String.format("LENGTH OF \"%s\" FIELD TWO INPUT IS INVALID!!!!!", wordTwo);
+
+            case "anagram":
+                return String.format("\"%s\" AND \"%s\" ARE ANAGRAMS!!!!!", wordOne,wordTwo);
+
+            case "notAnagram":
+                return String.format("\"%s\" AND \"%s\" ARE NOT ANAGRAMS!!!!!", wordOne,wordTwo);
+        
+        }
+        return word;
     }
 
     private String setGameMessage(JLabel label,String message){
