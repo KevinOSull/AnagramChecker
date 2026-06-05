@@ -19,12 +19,12 @@ import java.util.LinkedHashMap;
 import javax.swing.*;
 public class Anagram extends JFrame{
 
-    /*private int[] firstWordArray = new int[26];
+    private int[] firstWordArray = new int[26];
     private int[] secondWordArray = new int[26];
     private String caseWordOne = "";
     private String caseWordTwo = "";
     private String userWordOne = "";
-    private String userWordTwo = "";*/
+    private String userWordTwo = "";
 
     private JFrame frame = new JFrame();
     private static final Random RAND = new Random();
@@ -142,34 +142,31 @@ public class Anagram extends JFrame{
     }
 
     private void startGame(){
-        int[] firstWordArray = new int[26];
-        int[] secondWordArray = new int[26];
-        
-        //String userWordTwo = wordTwoTextField.getText();
         String userWordOne = wordOneTextField.getText();
         boolean isValid = isExit(userWordOne);
         if(isValid){
             JOptionPane.showMessageDialog(frame,"Thanks for playing!","Goodbye!",JOptionPane.INFORMATION_MESSAGE);
             dispose();
         }
-
-        /*if(isInputEmpty(wordOneTextField) || isLengthOfWordValid(wordOneTextField) || !hasFileContainedWord(userWordOne)){
-            errorMessages(userWordOne,"temp");
-        } */
-
-        /*boolean hasErrors = isInputEmpty(wordOneTextField) || isLengthOfWordValid(wordOneTextField) || !hasFileContainedWord(wordOneTextField);
-        if(hasErrors){
-            errorMessages(userWordOne,"temp");
-        }*/
-
         
         if(hasErrors(wordOneTextField)){
             errorMessages(userWordOne,"temp");
+            return;
         }
 
         String userWordTwo = wordTwoTextField.getText();
-        if(hasErrors(wordTwoTextField))
+        if(hasErrors(wordTwoTextField)){
             errorMessages(userWordOne,userWordTwo);
+            return;
+        }
+        processAndCheckGame();
+    }
+
+    private void processAndCheckGame(){
+        caseWordOne = checkCaseOfWord(userWordOne);
+        caseWordTwo = checkCaseOfWord(userWordTwo);
+        processWordsAndArrays(firstWordArray,secondWordArray,caseWordOne,caseWordTwo);
+        checkWinner(userWordOne,userWordTwo,firstWordArray,secondWordArray);
     }
 
     private boolean hasErrors(JTextField jTextField){
@@ -208,7 +205,16 @@ public class Anagram extends JFrame{
     }
 
     private void checkWinner(String wordOne,String wordTwo,int[] wordOneArray,int[] wordTwoArray){
-
+        Map<String,Boolean> anagramResults = new LinkedHashMap<>();
+        anagramResults.put(getGameMessage("angram",wordOne,wordTwo),booleanIsAnagram(wordOneArray,wordTwoArray));
+        anagramResults.put(getGameMessage("notAnagram",wordOne,wordTwo),!booleanIsAnagram(wordOneArray,wordTwoArray));
+        for(Map.Entry<String,Boolean> entry:anagramResults.entrySet()){
+            if(entry.getValue()){
+                setGameMessage(resultLabel,entry.getKey());
+                System.out.println(entry.getKey());
+                break;
+            }
+        }
     }
 
     private void errorMessages(String wordOne,String wordTwo){
@@ -241,7 +247,7 @@ public class Anagram extends JFrame{
         return true;
     }
 
-    private boolean booleanIsAnagram(int[]firstWordArray,int[] secondWordArray,String caseWordOne,String caseWordTwo){
+    private boolean booleanIsAnagram(int[]firstWordArray,int[] secondWordArray){
         return true;
         
     }
