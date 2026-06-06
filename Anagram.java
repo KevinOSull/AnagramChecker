@@ -267,31 +267,45 @@ public class Anagram extends JFrame{
         return word;
     }
 
-    private String setGameMessage(JLabel label,String message){
+   /*  private String setGameMessage(JLabel label,String message){
         return "";
+    }*/
+
+    private JLabel setGameMessage(JLabel label,String message){
+        label.setText(message);
+        return label;
     }
 
-    private boolean isInputEmpty(JTextField textField){
-        return true;
+    private boolean isInputEmpty(JTextField jTextField){
+        String input = jTextField.getText().trim();
+        return input.isEmpty();
         
     }
 
     private boolean isLengthOfWordValid(JTextField jTextField){
-        return true;
+        String input = jTextField.getText().trim();
+        return input.length() <= 2;
     }
 
     private boolean isLengthOfWordsMismatch(JTextField jTextField,JTextField jTextFieldTwo){
-        return true;
+        String inputOne = jTextField.getText().trim();
+        String inputTwo = jTextFieldTwo.getText().trim();
+        return inputOne.length() != inputTwo.length();
         
     }
 
     private boolean hasFileContainedWord(JTextField jTextField){
-        return true;
+        String input = jTextField.getText().trim();
+        return !fileWords.contains(input.toLowerCase().trim());
     }
 
     private boolean booleanIsAnagram(int[]firstWordArray,int[] secondWordArray){
+        for(int i = 0; i < 26; i++){
+            if(firstWordArray[i] != secondWordArray[i]){
+                return false;
+            }
+        }
         return true;
-        
     }
 
     private void processWordsAndArrays(int[] firstWordArray,int[] secondWordArray,String caseWordOne,String caseWordTwo){
