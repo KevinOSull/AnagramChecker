@@ -85,10 +85,10 @@ public class Anagram extends JFrame{
         errorMessagesLabelText.setBounds(21,237,101,14);
         errorMessagesLabelText.setForeground(Color.red);
         
-        resultLabel = new JLabel("result go here");
+        resultLabel = new JLabel("");
         resultLabel.setBounds(21,212,566,14);
 
-        errorMessageLabel = new JLabel("error messages go here");
+        errorMessageLabel = new JLabel("");
         errorMessageLabel.setBounds(21,250,566,14);
 
         wordOneTextField = new JTextField();
@@ -296,7 +296,7 @@ public class Anagram extends JFrame{
 
     private boolean hasFileContainedWord(JTextField jTextField){
         String input = jTextField.getText().trim();
-        return !fileWords.contains(input.toLowerCase().trim());
+        return fileWords.contains(input.toLowerCase().trim());
     }
 
     private boolean booleanIsAnagram(int[]firstWordArray,int[] secondWordArray){
@@ -309,35 +309,58 @@ public class Anagram extends JFrame{
     }
 
     private void processWordsAndArrays(int[] firstWordArray,int[] secondWordArray,String caseWordOne,String caseWordTwo){
-        
+        resetArrays(firstWordArray);
+        resetArrays(secondWordArray);
+        countCharacters(caseWordOne,firstWordArray);
+        countCharacters(caseWordTwo,secondWordArray);
     }
 
     private void countCharacters(String word,int[]count){
-
+        for(int i = 0; i < word.length(); i++) {
+			if(word.charAt(i) >= 97 && word.charAt(i) <= 122) {
+				int result = word.charAt(i)-97;
+				count[result]++;
+			}
+		}
     }
 
     private void resetArrays(int[] numArrays){
-
+        for(int i = 0; i < numArrays.length; i++){
+            numArrays[i] = 0;
+        }
     }
 
     private String checkCaseOfWord(String words){
-        return "";
+        return words = convertToLowerCase(words);
     }
 
     private String convertToLowerCase(String input){
-        return "";
+        StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < input.length(); i++) {
+			if(input.charAt(i) >= 65 && input.charAt(i) <= 90) {
+				char result = (char)(input.charAt(i)+32);
+				sb.append(result);
+			}else if(input.charAt(i)>=97 && input.charAt(i) <= 122) {
+				char result = (char)(input.charAt(i));
+				sb.append(result);
+			}
+		}
+		return sb.toString();
     }
 
     private void reset(){
-        
+        wordOneTextField.setText("");
+        wordTwoTextField.setText("");
+        resultLabel.setText("");
+        errorMessageLabel.setText("");
     }
 
     private void exitButton(){
-
+        dispose();
     }
 
     private boolean isExit(String userWordOne){
-        return !userWordOne.equalsIgnoreCase("quit");
+        return userWordOne.equalsIgnoreCase("quit");
     }
 
     private int getRandomColor(){
