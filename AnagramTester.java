@@ -7,5 +7,6 @@ public class AnagramTester{
         Anagram anagram = new Anagram();
         anagram.setBounds(X_COORDINATE,Y_COORDINATE,WINDOW_WIDTH,WINDOW_HEIGHT);
         anagram.setVisible(true);
+        
     }
 }
