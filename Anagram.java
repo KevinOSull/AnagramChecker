@@ -12,13 +12,15 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.InputMismatchException;
-
+import java.io.File;
+import java.io.FileNotFoundException;
 import javax.swing.border.EmptyBorder;
 import java.util.function.Supplier;
 import java.util.LinkedHashMap;
 import javax.swing.*;
 public class Anagram extends JFrame{
-
+    private HashMap<String,String> gameMessages = new HashMap<>();
+    private static final File TEXT_FILE = new File("gamemessages.txt");
     private int[] firstWordArray = new int[26];
     private int[] secondWordArray = new int[26];
     private String caseWordOne = "";
@@ -55,6 +57,7 @@ public class Anagram extends JFrame{
     private Color[] colors = new Color[]{Color.RED,Color.black,Color.green,Color.blue};
 
     public Anagram(){
+        loadGameMessagesFile();
         getContentPane().setLayout(null);
         headerLabel = new JLabel("ANAGRAM CHECKER");
         headerLabel.setFont(new Font("Tahoma",Font.BOLD,16));
@@ -173,6 +176,20 @@ public class Anagram extends JFrame{
         }
     }
 
+    private void loadGameMessagesFile(){
+        try(Scanner myFileScanner = new Scanner(TEXT_FILE)){
+            while(myFileScanner.hasNextLine()){
+                String line = myFileScanner.nextLine();
+                String[] values = line.split("=");
+                if(values.length == 2){
+                    gameMessages.put(values[0].trim(),values[1].trim());
+                }
+            }
+        }catch(FileNotFoundException e){
+            JOptionPane.showMessageDialog(frame,"Game messages file not found!","Error!",JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void filterOutBadData(){
         boolean isValid = true;
         Set<String>cleanData = new HashSet<>();
@@ -191,7 +208,45 @@ public class Anagram extends JFrame{
         fileWords = cleanData;
     }
 
+
+
+    private boolean errorMessages(String wordOne,String wordTwo){
+        Map<String,Boolean>errorMessages = new LinkedHashMap<>();
+        errorMessages.put(getGameMessage("emptyFieldOne"),isInputEmpty(wordOneTextField));
+        errorMessages.put(getGameMessage("emptyFieldTwo"),isInputEmpty(wordTwoTextField));
+        errorMessages.put(getGameMessage("firstWordNotInFile"),!hasFileContainedWord(wordOneTextField));
+        errorMessages.put(getGameMessage("secondWordNotInFile"),!hasFileContainedWord(wordTwoTextField));
+        errorMessages.put(getGameMessage("lengthMismatch"),isLengthOfWordsMismatch(wordOneTextField,wordTwoTextField));
+        errorMessages.put(getGameMessage("isWordOneLengthInvalid"),isLengthOfWordValid(wordOneTextField));
+        errorMessages.put(getGameMessage("isWordTwoLengthInvalid"),isLengthOfWordValid(wordTwoTextField));
+        for(Map.Entry<String,Boolean> entry:errorMessages.entrySet()){
+            if(entry.getValue()){
+                setGameMessage(errorMessageLabel,entry.getKey());
+                System.out.println(entry.getKey());
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void checkWinner(String wordOne,String wordTwo,int[] wordOneArray,int[] wordTwoArray){
+        Map<String,Boolean> anagramResults = new LinkedHashMap<>();
+        anagramResults.put(getGameMessage("angram"),booleanIsAnagram(wordOneArray,wordTwoArray));
+        anagramResults.put(getGameMessage("notAnagram"),!booleanIsAnagram(wordOneArray,wordTwoArray));
+        for(Map.Entry<String,Boolean> entry:anagramResults.entrySet()){
+            if(entry.getValue()){
+                setGameMessage(resultLabel,entry.getKey());
+                System.out.println(entry.getKey());
+                break;
+            }
+        }
+    }
+
+    private String getGameMessage(String key){
+        return gameMessages.getOrDefault(key,key);
+    }
+
+    /*private void checkWinner(String wordOne,String wordTwo,int[] wordOneArray,int[] wordTwoArray){
         Map<String,Boolean> anagramResults = new LinkedHashMap<>();
         anagramResults.put(getGameMessage("angram",wordOne,wordTwo),booleanIsAnagram(wordOneArray,wordTwoArray));
         anagramResults.put(getGameMessage("notAnagram",wordOne,wordTwo),!booleanIsAnagram(wordOneArray,wordTwoArray));
@@ -221,9 +276,9 @@ public class Anagram extends JFrame{
             }
         }
         return false;
-    }
+    }*/
     
-    private String getGameMessage(String word,String wordOne,String wordTwo){
+    /*private String getGameMessage(String word,String wordOne,String wordTwo){
         switch(word){
             case "emptyFieldOne":
                 return String.format("\"%s\" FIELD ONE INPUT CANNOT BE EMPTY!!!!!", wordOne);
@@ -254,7 +309,7 @@ public class Anagram extends JFrame{
         
         }
         return word;
-    }
+    }*/
 
     private JLabel setGameMessage(JLabel label,String message){
         label.setText(message);
