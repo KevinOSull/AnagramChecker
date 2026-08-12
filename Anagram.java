@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import java.util.function.Supplier;
 import java.util.LinkedHashMap;
 import javax.swing.*;
+import javax.swing.Timer;
 public class Anagram extends JFrame{
     private HashMap<String,String> gameMessages = new HashMap<>();
     private static final File TEXT_FILE = new File("gamemessages.txt");
@@ -53,6 +54,9 @@ public class Anagram extends JFrame{
     private JLabel headerLabel;
     private JLabel resultLabel;
     private JLabel errorMessageLabel;
+
+    private Timer errorMessageTimer;
+    private Timer resultMessageTimer;
 
     private Color[] colors = new Color[]{Color.RED,Color.black,Color.green,Color.blue};
 
@@ -136,6 +140,25 @@ public class Anagram extends JFrame{
             }
         });
 
+    }
+
+    private Timer displayOutputTimer(int delay,Runnable taskToRun){
+        Timer timer = new Timer(delay, new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                Timer timeInMotion = (Timer)e.getSource();
+                timeInMotion.stop();
+                taskToRun.run();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+        return timer;
+    }
+
+    private void stopTimer(Timer timer){
+        if(timer != null){
+            timer.stop();
+        }
     }
 
     private void submitWordButton(){
@@ -222,6 +245,7 @@ public class Anagram extends JFrame{
         for(Map.Entry<String,Boolean> entry:errorMessages.entrySet()){
             if(entry.getValue()){
                 setGameMessage(errorMessageLabel,entry.getKey());
+                scheduleMessageToShow(errorMessageTimer,3000,errorMessageLabel);
                 System.out.println(entry.getKey());
                 return true;
             }
@@ -231,15 +255,22 @@ public class Anagram extends JFrame{
 
     private void checkWinner(String wordOne,String wordTwo,int[] wordOneArray,int[] wordTwoArray){
         Map<String,Boolean> anagramResults = new LinkedHashMap<>();
-        anagramResults.put(getGameMessage("angram"),booleanIsAnagram(wordOneArray,wordTwoArray));
+        anagramResults.put(getGameMessage("anagram"),booleanIsAnagram(wordOneArray,wordTwoArray));
         anagramResults.put(getGameMessage("notAnagram"),!booleanIsAnagram(wordOneArray,wordTwoArray));
         for(Map.Entry<String,Boolean> entry:anagramResults.entrySet()){
             if(entry.getValue()){
                 setGameMessage(resultLabel,entry.getKey());
+                scheduleMessageToShow(resultMessageTimer,3000,resultLabel);
                 System.out.println(entry.getKey());
                 break;
             }
         }
+    }
+
+    private Timer scheduleMessageToShow(Timer timer,int displayDelay,JLabel label){
+        stopTimer(timer);
+        timer = displayOutputTimer(displayDelay,()->label.setText(""));
+        return timer;
     }
 
     private String getGameMessage(String key){
